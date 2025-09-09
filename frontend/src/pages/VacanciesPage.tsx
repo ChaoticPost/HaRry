@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Card, CardContent, CardHeader, CardTitle } from '../components/ui/card';
+import { Card, CardContent } from '../components/ui/card';
 import { Button } from '../components/ui/button';
 import { Badge } from '../components/ui/badge';
 import { Search, Plus, MapPin, Users, DollarSign, Calendar } from 'lucide-react';
@@ -22,7 +22,7 @@ const VacanciesPage: React.FC = () => {
         try {
             setLoading(true);
             const response = await apiClient.getVacancies();
-            setVacancies(response.data || []);
+            setVacancies((response as any).data || []);
         } catch (error) {
             console.error('Failed to load vacancies:', error);
             // Fallback to mock data

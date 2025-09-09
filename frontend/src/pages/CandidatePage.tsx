@@ -4,13 +4,13 @@ import { Card, CardContent, CardHeader, CardTitle } from '../components/ui/card'
 import { Button } from '../components/ui/button';
 import { Badge } from '../components/ui/badge';
 import { Progress } from '../components/ui/progress';
-import { 
-  User, 
-  Mail, 
-  Phone, 
-  Calendar, 
-  FileText, 
-  Download, 
+import {
+  User,
+  Mail,
+  Phone,
+  Calendar,
+  FileText,
+  Download,
   Play,
   Star,
   TrendingUp,
@@ -36,21 +36,21 @@ const CandidatePage: React.FC = () => {
   const loadCandidateData = async (candidateId: string) => {
     try {
       setLoading(true);
-      
+
       // Load candidate data
-      const candidateResponse = await apiClient.getCandidate(candidateId);
+      const candidateResponse = await apiClient.getCandidate(candidateId) as any;
       setCandidate(candidateResponse.data);
-      
+
       // Load interview data if exists
       if (candidateResponse.data.interviewId) {
-        const interviewResponse = await apiClient.getInterview(candidateResponse.data.interviewId);
+        const interviewResponse = await apiClient.getInterview(candidateResponse.data.interviewId) as any;
         setInterview(interviewResponse.data);
       }
-      
+
       // Load report data
-      const reportResponse = await apiClient.getReport(candidateId);
+      const reportResponse = await apiClient.getReport(candidateId) as any;
       setReport(reportResponse.data);
-      
+
     } catch (error) {
       console.error('Failed to load candidate data:', error);
       // Fallback to mock data
@@ -68,7 +68,7 @@ const CandidatePage: React.FC = () => {
         score: 85,
         matchPercentage: 78
       });
-      
+
       setInterview({
         id: '1',
         candidateId: candidateId,
@@ -80,7 +80,7 @@ const CandidatePage: React.FC = () => {
         duration: 5400,
         score: 85
       });
-      
+
       setReport({
         id: '1',
         candidateId: candidateId,
@@ -182,9 +182,9 @@ const CandidatePage: React.FC = () => {
                 </span>
               </div>
               <div className="pt-4">
-                <Button 
-                  variant="outline" 
-                  size="sm" 
+                <Button
+                  variant="outline"
+                  size="sm"
                   onClick={handleDownloadResume}
                   className="w-full"
                 >
@@ -251,7 +251,7 @@ const CandidatePage: React.FC = () => {
                       </div>
                     )}
                   </div>
-                  
+
                   {interview.score && (
                     <div>
                       <div className="flex justify-between text-sm mb-2">
@@ -261,7 +261,7 @@ const CandidatePage: React.FC = () => {
                       <Progress value={interview.score} />
                     </div>
                   )}
-                  
+
                   {interview.status === 'completed' && (
                     <div className="pt-4">
                       <Link to={`/interviews/${interview.id}/video`}>
@@ -297,7 +297,7 @@ const CandidatePage: React.FC = () => {
                   <h4 className="font-medium mb-2">Резюме</h4>
                   <p className="text-sm text-gray-600">{report.summary}</p>
                 </div>
-                
+
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div>
                     <h4 className="font-medium mb-2 text-green-700">Сильные стороны</h4>
@@ -310,7 +310,7 @@ const CandidatePage: React.FC = () => {
                       ))}
                     </ul>
                   </div>
-                  
+
                   <div>
                     <h4 className="font-medium mb-2 text-red-700">Области для развития</h4>
                     <ul className="space-y-1">
@@ -323,7 +323,7 @@ const CandidatePage: React.FC = () => {
                     </ul>
                   </div>
                 </div>
-                
+
                 <div>
                   <h4 className="font-medium mb-2">Рекомендации</h4>
                   <ul className="space-y-1">
@@ -334,19 +334,19 @@ const CandidatePage: React.FC = () => {
                     ))}
                   </ul>
                 </div>
-                
+
                 <div className="pt-4 border-t">
                   <div className="flex justify-between items-center">
                     <span className="font-medium">Итоговое решение:</span>
-                    <Badge 
+                    <Badge
                       className={
                         report.decision === 'hire' ? 'bg-green-100 text-green-800' :
-                        report.decision === 'reject' ? 'bg-red-100 text-red-800' :
-                        'bg-yellow-100 text-yellow-800'
+                          report.decision === 'reject' ? 'bg-red-100 text-red-800' :
+                            'bg-yellow-100 text-yellow-800'
                       }
                     >
                       {report.decision === 'hire' ? 'Нанять' :
-                       report.decision === 'reject' ? 'Отклонить' : 'Рассмотреть'}
+                        report.decision === 'reject' ? 'Отклонить' : 'Рассмотреть'}
                     </Badge>
                   </div>
                 </div>

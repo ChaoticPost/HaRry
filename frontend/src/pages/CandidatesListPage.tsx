@@ -2,10 +2,10 @@ import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Card, CardContent, CardHeader, CardTitle } from '../components/ui/card';
 import { Button } from '../components/ui/button';
-import { Search, Plus, Star, Clock, CheckCircle, XCircle } from 'lucide-react';
+import { Search, Plus } from 'lucide-react';
 import apiClient from '../api/client';
 import type { Candidate } from '../types';
-import { getStatusIcon, getStatusText, getStatusColor } from '../utils/format';
+import { getStatusIcon, getStatusText } from '../utils/format';
 
 const CandidatesListPage: React.FC = () => {
   const [candidates, setCandidates] = useState<Candidate[]>([]);
@@ -20,7 +20,7 @@ const CandidatesListPage: React.FC = () => {
   const loadCandidates = async () => {
     try {
       setLoading(true);
-      const response = await apiClient.getCandidates();
+      const response = await apiClient.getCandidates() as any;
       if (response && response.data) {
         setCandidates(response.data);
       } else {
@@ -62,7 +62,7 @@ const CandidatesListPage: React.FC = () => {
 
   const filteredCandidates = candidates.filter(candidate => {
     const matchesSearch = candidate.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         candidate.position.toLowerCase().includes(searchTerm.toLowerCase());
+      candidate.position.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesStatus = statusFilter === 'all' || candidate.status === statusFilter;
     return matchesSearch && matchesStatus;
   });
@@ -100,7 +100,7 @@ const CandidatesListPage: React.FC = () => {
                 className="pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent w-full"
               />
             </div>
-            
+
             <select
               value={statusFilter}
               onChange={(e) => setStatusFilter(e.target.value)}
@@ -134,7 +134,7 @@ const CandidatesListPage: React.FC = () => {
                 </div>
               </div>
             </CardHeader>
-            
+
             <CardContent>
               <div className="space-y-3">
                 <div>
@@ -143,7 +143,7 @@ const CandidatesListPage: React.FC = () => {
                     <p className="text-sm text-gray-600">{candidate.phone}</p>
                   )}
                 </div>
-                
+
                 <div>
                   <p className="text-sm font-medium mb-1">Опыт: {candidate.experience} лет</p>
                   <div className="flex flex-wrap gap-1">
@@ -162,7 +162,7 @@ const CandidatesListPage: React.FC = () => {
                     )}
                   </div>
                 </div>
-                
+
                 {candidate.matchPercentage && (
                   <div>
                     <div className="flex justify-between text-sm mb-1">
@@ -177,7 +177,7 @@ const CandidatesListPage: React.FC = () => {
                     </div>
                   </div>
                 )}
-                
+
                 <div className="flex justify-between items-center pt-2">
                   <span className="text-xs text-gray-500">
                     {new Date(candidate.createdAt).toLocaleDateString()}

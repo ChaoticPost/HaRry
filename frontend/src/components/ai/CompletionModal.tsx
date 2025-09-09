@@ -1,7 +1,6 @@
 import React from 'react';
 import { Button } from '../ui/button';
 import { CheckCircle } from 'lucide-react';
-import RobotAvatar from './RobotAvatar';
 
 interface CompletionModalProps {
   isOpen: boolean;
@@ -9,10 +8,9 @@ interface CompletionModalProps {
   candidateName?: string;
 }
 
-const CompletionModal: React.FC<CompletionModalProps> = ({ 
-  isOpen, 
-  onClose, 
-  candidateName = 'Кандидат' 
+const CompletionModal: React.FC<CompletionModalProps> = ({
+  isOpen,
+  onClose
 }) => {
   if (!isOpen) return null;
 
@@ -22,16 +20,16 @@ const CompletionModal: React.FC<CompletionModalProps> = ({
         <div className="w-20 h-20 bg-cyan-500 rounded-full flex items-center justify-center mx-auto mb-4">
           <CheckCircle className="w-10 h-10 text-white" />
         </div>
-        
+
         <h2 className="text-2xl font-bold text-gray-900 mb-2">
           Спасибо!
         </h2>
-        
+
         <p className="text-gray-600 mb-6">
           Ваши ответы записаны и зафиксированы
         </p>
-        
-        <Button 
+
+        <Button
           onClick={onClose}
           className="w-full"
         >

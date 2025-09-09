@@ -6,7 +6,7 @@ import { Badge } from '../ui/badge';
 import { Progress } from '../ui/progress';
 import { User, Mail, Phone, Calendar, Star, Clock, CheckCircle, XCircle } from 'lucide-react';
 import type { Candidate } from '../../types';
-import { getStatusText, getStatusColor, formatDate } from '../../utils/format';
+import { getStatusText, formatDate } from '../../utils/format';
 
 interface CandidateCardProps {
     candidate: Candidate;

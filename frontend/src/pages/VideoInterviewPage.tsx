@@ -1,14 +1,7 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { Card, CardContent, CardHeader, CardTitle } from '../components/ui/card';
 import { Button } from '../components/ui/button';
-import { Badge } from '../components/ui/badge';
-import {
-  Play,
-  Pause,
-  Volume2,
-  VolumeX,
-  Maximize,
+import { 
   ArrowLeft,
   MessageSquare,
   BarChart3,
@@ -16,8 +9,7 @@ import {
   Video,
   Monitor,
   MoreVertical,
-  Bell,
-  CheckCircle
+  Bell
 } from 'lucide-react';
 import apiClient from '../api/client';
 import type { Interview, TranscriptEntry, InterviewMetrics, WebSocketMessage } from '../types';
@@ -31,10 +23,6 @@ const VideoInterviewPage: React.FC = () => {
   const [interview, setInterview] = useState<Interview | null>(null);
   const [transcript, setTranscript] = useState<TranscriptEntry[]>([]);
   const [metrics, setMetrics] = useState<InterviewMetrics | null>(null);
-  const [isPlaying, setIsPlaying] = useState(false);
-  const [currentTime, setCurrentTime] = useState(0);
-  const [isMuted, setIsMuted] = useState(false);
-  const [isFullscreen, setIsFullscreen] = useState(false);
   const [activeTab, setActiveTab] = useState<'transcript' | 'metrics'>('transcript');
   const [isRecording, setIsRecording] = useState(false);
   const [isAnswerComplete, setIsAnswerComplete] = useState(false);
@@ -42,7 +30,6 @@ const VideoInterviewPage: React.FC = () => {
   const [showCompletionModal, setShowCompletionModal] = useState(false);
   const [isMicOn, setIsMicOn] = useState(true);
   const [isVideoOn, setIsVideoOn] = useState(true);
-  const videoRef = useRef<HTMLVideoElement>(null);
   const wsRef = useRef<WebSocket | null>(null);
 
   useEffect(() => {
@@ -61,10 +48,10 @@ const VideoInterviewPage: React.FC = () => {
   const loadInterviewData = async (interviewId: string) => {
     try {
       const response = await apiClient.getInterview(interviewId);
-      if (response && response.data) {
-        setInterview(response.data);
-        setTranscript(response.data.transcript || []);
-        setMetrics(response.data.metrics || null);
+      if ((response as any) && (response as any).data) {
+        setInterview((response as any).data);
+        setTranscript((response as any).data.transcript || []);
+        setMetrics((response as any).data.metrics || null);
       }
     } catch (error) {
       console.error('Failed to load interview:', error);
@@ -162,50 +149,6 @@ const VideoInterviewPage: React.FC = () => {
     }
   };
 
-  const togglePlayPause = () => {
-    if (videoRef.current) {
-      if (isPlaying) {
-        videoRef.current.pause();
-        setIsPlaying(false);
-      } else {
-        videoRef.current.play().catch(error => {
-          console.error('Error playing video:', error);
-        });
-        setIsPlaying(true);
-      }
-    }
-  };
-
-  const toggleMute = () => {
-    if (videoRef.current) {
-      videoRef.current.muted = !isMuted;
-      setIsMuted(!isMuted);
-    }
-  };
-
-  const toggleFullscreen = () => {
-    if (videoRef.current) {
-      if (!isFullscreen) {
-        videoRef.current.requestFullscreen().then(() => {
-          setIsFullscreen(true);
-        }).catch(error => {
-          console.error('Error entering fullscreen:', error);
-        });
-      } else {
-        document.exitFullscreen().then(() => {
-          setIsFullscreen(false);
-        }).catch(error => {
-          console.error('Error exiting fullscreen:', error);
-        });
-      }
-    }
-  };
-
-  const handleTimeUpdate = () => {
-    if (videoRef.current) {
-      setCurrentTime(videoRef.current.currentTime);
-    }
-  };
 
   if (!interview) {
     return <div className="flex justify-center items-center h-64">Загрузка...</div>;

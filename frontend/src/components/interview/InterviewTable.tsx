@@ -12,7 +12,7 @@ interface InterviewTableProps {
     onStatusChange?: (interviewId: string, status: string) => void;
 }
 
-const InterviewTable: React.FC<InterviewTableProps> = ({ interviews, onStatusChange }) => {
+const InterviewTable: React.FC<InterviewTableProps> = ({ interviews }) => {
     const getStatusIcon = (status: string) => {
         switch (status) {
             case 'scheduled': return <Calendar className="w-4 h-4 text-blue-500" />;

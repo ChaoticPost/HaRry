@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Card, CardContent, CardHeader, CardTitle } from '../components/ui/card';
+import { Card, CardContent } from '../components/ui/card';
 import { Button } from '../components/ui/button';
-import { Search, Filter, Play, Clock, CheckCircle, XCircle } from 'lucide-react';
+import { Search, Play, Clock } from 'lucide-react';
 import apiClient from '../api/client';
 import type { Interview } from '../types';
 import { getStatusText, getStatusColor, formatDate } from '../utils/format';
@@ -21,7 +21,7 @@ const InterviewListPage: React.FC = () => {
     try {
       setLoading(true);
       const response = await apiClient.getInterviews();
-      setInterviews(response.data || []);
+      setInterviews((response as any).data || []);
     } catch (error) {
       console.error('Failed to load interviews:', error);
       // Fallback to mock data
@@ -53,7 +53,7 @@ const InterviewListPage: React.FC = () => {
 
   const filteredInterviews = interviews.filter(interview => {
     const matchesSearch = interview.candidateName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         interview.position.toLowerCase().includes(searchTerm.toLowerCase());
+      interview.position.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesStatus = statusFilter === 'all' || interview.status === statusFilter;
     return matchesSearch && matchesStatus;
   });
@@ -83,7 +83,7 @@ const InterviewListPage: React.FC = () => {
                 className="pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent w-full"
               />
             </div>
-            
+
             <select
               value={statusFilter}
               onChange={(e) => setStatusFilter(e.target.value)}
@@ -122,7 +122,7 @@ const InterviewListPage: React.FC = () => {
                       )}
                     </div>
                   </div>
-                  
+
                   <div className="mt-4 flex items-center space-x-6 text-sm text-gray-500">
                     <div className="flex items-center space-x-1">
                       <Clock className="w-4 h-4" />
@@ -136,7 +136,7 @@ const InterviewListPage: React.FC = () => {
                     )}
                   </div>
                 </div>
-                
+
                 <div className="flex items-center space-x-2">
                   {interview.status === 'completed' && (
                     <Link to={`/interviews/${interview.id}/video`}>

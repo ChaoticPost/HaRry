@@ -21,13 +21,13 @@ const mockChartData = [
 ];
 
 const Dashboard: React.FC = () => {
-  const [metrics, setMetrics] = useState(mockMetrics);
+  const [metrics] = useState(mockMetrics);
   const [recentInterviews, setRecentInterviews] = useState([]);
 
   useEffect(() => {
     // Load recent interviews
     apiClient.getInterviews({ limit: 5 })
-      .then(data => setRecentInterviews(data.data || []))
+      .then((data: any) => setRecentInterviews(data.data || []))
       .catch(err => console.error('Failed to load interviews:', err));
   }, []);
 
@@ -137,11 +137,10 @@ const Dashboard: React.FC = () => {
                     <p className="text-sm text-gray-600">{interview.position}</p>
                   </div>
                   <div className="text-right">
-                    <span className={`px-2 py-1 rounded-full text-xs ${
-                      interview.status === 'completed' ? 'bg-green-100 text-green-800' :
-                      interview.status === 'in_progress' ? 'bg-blue-100 text-blue-800' :
-                      'bg-gray-100 text-gray-800'
-                    }`}>
+                    <span className={`px-2 py-1 rounded-full text-xs ${interview.status === 'completed' ? 'bg-green-100 text-green-800' :
+                        interview.status === 'in_progress' ? 'bg-blue-100 text-blue-800' :
+                          'bg-gray-100 text-gray-800'
+                      }`}>
                       {interview.status}
                     </span>
                     <p className="text-sm text-gray-500 mt-1">

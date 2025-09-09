@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '../ui/card';
 import { Button } from '../ui/button';
 import { Badge } from '../ui/badge';
-import { Play, Pause, Volume2, VolumeX, Search } from 'lucide-react';
+import { Play, Pause, Search } from 'lucide-react';
 import type { TranscriptEntry } from '../../types';
 import { formatDuration } from '../../utils/format';
 
@@ -109,8 +109,8 @@ const TranscriptViewer: React.FC<TranscriptViewerProps> = ({
                             key={entry.id}
                             id={`transcript-${entry.id}`}
                             className={`p-3 rounded-lg cursor-pointer transition-colors ${selectedEntry === entry.id
-                                    ? 'ring-2 ring-blue-500'
-                                    : 'hover:bg-gray-50'
+                                ? 'ring-2 ring-blue-500'
+                                : 'hover:bg-gray-50'
                                 } ${getSpeakerColor(entry.speaker)}`}
                             onClick={() => handleEntryClick(entry)}
                         >

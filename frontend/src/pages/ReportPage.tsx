@@ -10,7 +10,6 @@ import {
     Star,
     TrendingUp,
     ArrowLeft,
-    Calendar,
     User,
     MessageSquare
 } from 'lucide-react';
@@ -37,16 +36,16 @@ const ReportPage: React.FC = () => {
 
             // Load report data
             const reportResponse = await apiClient.getReport(candidateId);
-            setReport(reportResponse.data);
+            setReport((reportResponse as any).data);
 
             // Load candidate data
             const candidateResponse = await apiClient.getCandidate(candidateId);
-            setCandidate(candidateResponse.data);
+            setCandidate((candidateResponse as any).data);
 
             // Load interview data if exists
-            if (candidateResponse.data.interviewId) {
-                const interviewResponse = await apiClient.getInterview(candidateResponse.data.interviewId);
-                setInterview(interviewResponse.data);
+            if ((candidateResponse as any).data.interviewId) {
+                const interviewResponse = await apiClient.getInterview((candidateResponse as any).data.interviewId);
+                setInterview((interviewResponse as any).data);
             }
 
         } catch (error) {
